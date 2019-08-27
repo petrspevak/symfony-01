@@ -1,5 +1,4 @@
 /.idea/
-/node_modules/
 /yarn.lock
 
 ###> symfony/framework-bundle ###
@@ -21,4 +20,11 @@
 /.web-server-pid
 ###< symfony/web-server-bundle ###
 
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
 
