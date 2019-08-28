@@ -74,4 +74,13 @@ class MicroPostController extends AbstractController
             ['form' => $form->createView()]
         );
     }
+
+    /**
+     * @param $id
+     * @Route("/{id}", name="micro_post_show")
+     * @return Response
+     */
+    public function show(MicroPost $microPost) {
+        return $this->render('micro-post/show.html.twig', ['post' => $microPost]);
+    }
 }
