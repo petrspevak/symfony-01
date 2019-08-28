@@ -7,8 +7,9 @@ use App\Form\MicroPostType;
 use App\Repository\MicroPostRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,21 +45,41 @@ class MicroPostController extends AbstractController
     public function index(): Response
     {
         return $this->render('micro-post/index.html.twig', [
-            'posts' => $this->microPostRepository->findAll()
+            'posts' => $this->microPostRepository->findBy([], ['time' => 'DESC'])
         ]);
+    }
+
+    public function delete() {
+        
+    }
+
+    /**
+     * @Route("/edit/{id}", name="micro_post_edit")
+     * @param MicroPost $microPost
+     * @param Request $request
+     * @return Response
+     */
+    public function edit(MicroPost $microPost, Request $request): Response
+    {
+        return $this->form($microPost, $request);
     }
 
     /**
      * @Route("/add", name="micro_post_add")
      * @param Request $request
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
     public function add(Request $request): Response
     {
         $microPost = new MicroPost();
         $microPost->setTime(new DateTime());
 
+        return $this->form($microPost, $request);
+    }
+
+    private function form(MicroPost $microPost, Request $request)
+    {
         $form = $this->createForm(MicroPostType::class, $microPost);
         $form->handleRequest($request);
 
@@ -76,11 +97,12 @@ class MicroPostController extends AbstractController
     }
 
     /**
-     * @param $id
-     * @Route("/{id}", name="micro_post_show")
+     * @param MicroPost $microPost
      * @return Response
+     * @Route("/{id}", name="micro_post_show")
      */
-    public function show(MicroPost $microPost) {
+    public function show(MicroPost $microPost): Response
+    {
         return $this->render('micro-post/show.html.twig', ['post' => $microPost]);
     }
 }
