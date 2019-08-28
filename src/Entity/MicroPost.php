@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,11 +18,13 @@ class MicroPost
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=280)
      */
     private $text;
 
     /**
+     * @var DateTime
      * @ORM\Column(type="datetime")
      */
     private $time;
@@ -29,5 +32,41 @@ class MicroPost
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getText(): ?string
+    {
+        return $this->text;
+    }
+
+    /**
+     * @param string $text
+     * @return MicroPost
+     */
+    public function setText(string $text): MicroPost
+    {
+        $this->text = $text;
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getTime(): ?DateTime
+    {
+        return $this->time;
+    }
+
+    /**
+     * @param DateTime $time
+     * @return MicroPost
+     */
+    public function setTime(DateTime $time): MicroPost
+    {
+        $this->time = $time;
+        return $this;
     }
 }

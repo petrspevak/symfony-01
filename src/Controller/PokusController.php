@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PokusController extends AbstractController
 {
     /**
-     * @Route("/", name="pokus")
+     * @Route("/pokus", name="pokus")
      */
     public function index()
     {
