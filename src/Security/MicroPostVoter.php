@@ -40,7 +40,7 @@ class MicroPostVoter extends Voter
      * @param string $attribute
      * @param mixed $subject
      * @param TokenInterface $token
-     * 
+     *
      * @return bool
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
