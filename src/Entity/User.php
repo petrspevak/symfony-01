@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -30,7 +31,7 @@ class User implements UserInterface, Serializable
     private $username;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=100000)
      */
     private $password;
 
@@ -53,6 +54,18 @@ class User implements UserInterface, Serializable
      * @Assert\Length(min=4, max=50)
      */
     private $fullName;
+
+    /**
+     * @var ArrayCollection|null
+     * @ORM\OneToMany(targetEntity="MicroPost", mappedBy="user")
+     */
+    private $microPosts;
+
+    public function __construct()
+    {
+        $this->microPosts = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -116,6 +129,11 @@ class User implements UserInterface, Serializable
     {
         $this->plainPassword = $plainPassword;
         return $this;
+    }
+
+    public function getMicroPosts(): ?ArrayCollection
+    {
+        return $this->microPosts;
     }
 
     public function getRoles(): array

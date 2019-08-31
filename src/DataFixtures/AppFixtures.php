@@ -40,8 +40,9 @@ class AppFixtures extends Fixture
             ->setFullName('John Doe')
             ->setEmail('john@doe.com')
             ->setPassword($this->passwordEncoder->encodePassword($user, 'john123'));
-        $manager->persist($user);
+        $this->addReference('john', $user);
 
+        $manager->persist($user);
         $manager->flush();
     }
 
@@ -55,7 +56,8 @@ class AppFixtures extends Fixture
             $microPost = new MicroPost();
             $microPost
                 ->setText('Nahodny text ' . random_int(1, 10000))
-                ->setTime(new DateTime());
+                ->setTime(new DateTime())
+                ->setUser($this->getReference('john'));
             $manager->persist($microPost);
         }
 
