@@ -8,11 +8,13 @@ use App\Repository\MicroPostRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/micro-post")
@@ -56,6 +58,9 @@ class MicroPostController extends AbstractController
      */
     public function delete(MicroPost $microPost): RedirectResponse
     {
+        if (!$this->isGranted('delete', $microPost)) {
+            throw new AccessDeniedException();
+        }
         $this->entityManager->remove($microPost);
         $this->entityManager->flush();
 
@@ -69,9 +74,12 @@ class MicroPostController extends AbstractController
      * @param MicroPost $microPost
      * @param Request $request
      * @return Response
+     *
+     * @Security("is_granted('edit', microPost)")
      */
     public function edit(MicroPost $microPost, Request $request): Response
     {
+//        $this->denyAccessUnlessGranted('edit', $microPost); // dalsi moznost kontroly
         return $this->form($microPost, $request);
     }
 

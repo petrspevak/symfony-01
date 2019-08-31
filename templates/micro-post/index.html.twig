@@ -20,7 +20,7 @@
             {% endif %}
             {% if is_granted('delete', post) %}
                 <a href="{{ path('micro_post_delete', {'id': post.id}) }}">Delete</a>
-            {% endif %}
+            {% endif  %}
         </small>
     {% endfor %}
 {% endblock %}
