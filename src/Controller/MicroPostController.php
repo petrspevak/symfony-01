@@ -88,6 +88,8 @@ class MicroPostController extends AbstractController
      * @param Request $request
      * @return Response
      * @throws Exception
+     *
+     * @Security("has_role('ROLE_USER')")
      */
     public function add(Request $request): Response
     {
