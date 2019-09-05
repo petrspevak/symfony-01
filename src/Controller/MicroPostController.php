@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\MicroPost;
+use App\Entity\User;
 use App\Form\MicroPostType;
 use App\Repository\MicroPostRepository;
 use DateTime;
@@ -118,6 +119,18 @@ class MicroPostController extends AbstractController
     }
 
     /**
+     * @Route("/user/{username}", name="micro_post_user")
+     */
+    public function userPosts(User $userWithPosts)
+    {
+        return $this->render('micro-post/index.html.twig', [
+            'posts' => $userWithPosts->getMicroPosts()
+        ]);
+    }
+
+    /**
+     * Tato metoda musi byt na konci, jinak tato route spolkne i odkazy na jine.
+     *
      * @param MicroPost $microPost
      * @return Response
      * @Route("/{id}", name="micro_post_show")

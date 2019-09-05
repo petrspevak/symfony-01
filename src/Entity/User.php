@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -59,7 +60,7 @@ class User implements UserInterface, Serializable
     private $fullName;
 
     /**
-     * @var ArrayCollection|null
+     * @var Collection|null
      * @ORM\OneToMany(targetEntity="MicroPost", mappedBy="user")
      */
     private $microPosts;
@@ -140,7 +141,7 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    public function getMicroPosts(): ?ArrayCollection
+    public function getMicroPosts(): ?Collection
     {
         return $this->microPosts;
     }
