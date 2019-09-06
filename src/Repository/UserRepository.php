@@ -19,6 +19,19 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    public function findAllWithMoreThan5PostsExceptUser(User $user)
+    {
+        return $this->createQueryBuilder('u')
+            ->innerJoin('u.microPosts', 'p')
+            ->groupBy('u')
+            ->having('count(p) > 5')
+            ->andHaving('u != :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
@@ -47,4 +60,5 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
     */
+
 }
