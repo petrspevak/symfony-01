@@ -1,4 +1,4 @@
-<?php /** @noinspection TypeUnsafeComparisonInspection */
+<?php
 
 namespace App\Controller;
 
@@ -24,9 +24,8 @@ class FollowingController extends AbstractController
         $currentUser = $this->getUser();
 
 
-        if ($currentUser != $user) {
-            /** @noinspection NullPointerExceptionInspection */
-            $currentUser->getFollowing()->add($user);
+        if ($currentUser->getId() !== $user->getId()) {
+            $currentUser->follow($user);
         }
 
         return $this->flushAndRedirect($user);

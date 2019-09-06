@@ -209,4 +209,15 @@ class User implements UserInterface, Serializable
             $this->username,
             $this->password] = unserialize($serialized, ['allowed_classes' => false]);
     }
+
+    public function follow(User $userToFollow): self
+    {
+        if ($this->following->contains($userToFollow)) {
+            return $this;
+        }
+
+        $this->following->add($userToFollow);
+
+        return $this;
+    }
 }
