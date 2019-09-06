@@ -95,7 +95,7 @@ class MicroPostController extends AbstractController
     public function add(Request $request): Response
     {
         $microPost = new MicroPost();
-        $microPost->setTime(new DateTime());
+        $microPost->setUser($this->getUser());
 
         return $this->form($microPost, $request);
     }
