@@ -66,16 +66,33 @@ class User implements UserInterface, Serializable
     private $microPosts;
 
     /**
-     * @var array
+     * @var array|null
      * @ORM\Column(type="simple_array")
      */
     private $roles;
 
+    /**
+     * @var Collection|null
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="following")
+     */
+    private $followers;
+
+    /**
+     * @var Collection|null
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="followers")
+     * @ORM\JoinTable(name="following",
+     *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="following_user_id", referencedColumnName="id")}
+     * )
+     */
+    private $following;
+
     public function __construct()
     {
         $this->microPosts = new ArrayCollection();
+        $this->followers = new ArrayCollection();
+        $this->following = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -144,6 +161,16 @@ class User implements UserInterface, Serializable
     public function getMicroPosts(): ?Collection
     {
         return $this->microPosts;
+    }
+
+    public function getFollowers(): ?Collection
+    {
+        return $this->followers;
+    }
+
+    public function getFollowing(): ?Collection
+    {
+        return $this->following;
     }
 
     public function getRoles(): ?array
