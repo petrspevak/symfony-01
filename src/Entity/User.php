@@ -60,7 +60,7 @@ class User implements UserInterface, Serializable
     private $fullName;
 
     /**
-     * @var Collection|null
+     * @var Collection
      * @ORM\OneToMany(targetEntity="MicroPost", mappedBy="user")
      */
     private $microPosts;
@@ -72,13 +72,13 @@ class User implements UserInterface, Serializable
     private $roles;
 
     /**
-     * @var Collection|null
+     * @var Collection
      * @ORM\ManyToMany(targetEntity="User", mappedBy="following")
      */
     private $followers;
 
     /**
-     * @var Collection|null
+     * @var Collection
      * @ORM\ManyToMany(targetEntity="User", inversedBy="followers")
      * @ORM\JoinTable(name="following",
      *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
@@ -87,11 +87,18 @@ class User implements UserInterface, Serializable
      */
     private $following;
 
+    /**
+     * @var Collection
+     * @ORM\ManyToMany(targetEntity="App\Entity\MicroPost", mappedBy="likedBy")
+     */
+    private $microPostsLiked;
+
     public function __construct()
     {
         $this->microPosts = new ArrayCollection();
         $this->followers = new ArrayCollection();
         $this->following = new ArrayCollection();
+        $this->microPostsLiked = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -158,17 +165,17 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    public function getMicroPosts(): ?Collection
+    public function getMicroPosts(): Collection
     {
         return $this->microPosts;
     }
 
-    public function getFollowers(): ?Collection
+    public function getFollowers(): Collection
     {
         return $this->followers;
     }
 
-    public function getFollowing(): ?Collection
+    public function getFollowing(): Collection
     {
         return $this->following;
     }
@@ -182,6 +189,11 @@ class User implements UserInterface, Serializable
     {
         $this->roles = $roles;
         return $this;
+    }
+
+    public function getMicroPostsLiked(): Collection
+    {
+        return $this->microPostsLiked;
     }
 
     public function getSalt()
@@ -212,11 +224,9 @@ class User implements UserInterface, Serializable
 
     public function follow(User $userToFollow): self
     {
-        if ($this->following->contains($userToFollow)) {
-            return $this;
+        if (!$this->following->contains($userToFollow)) {
+            $this->following->add($userToFollow);
         }
-
-        $this->following->add($userToFollow);
 
         return $this;
     }
