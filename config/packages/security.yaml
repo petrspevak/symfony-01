@@ -25,7 +25,7 @@ security:
                 login_path: security_login
                 csrf_token_generator: security.csrf.token_manager
                 default_target_path: micro_post_index
-#                always_use_default_target_path: false
+                always_use_default_target_path: true
 #                use_referer: true
 #                failure_path:
             # https://symfony.com/doc/current/security/form_login_setup.html
