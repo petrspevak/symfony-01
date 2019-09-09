@@ -28,12 +28,25 @@ class NotificationRepository extends ServiceEntityRepository
      */
     public function findUnseenByUserCount(User $user): int
     {
-        return $this->createQueryBuilder('ln')
-            ->select('count(ln)')
-            ->where('ln.user = :user')
+        return $this->createQueryBuilder('n')
+            ->select('count(n)')
+            ->where('n.user = :user')
+            ->andWhere('n.seen = 0')
             ->setParameter('user', $user)
             ->getQuery()
             ->getSingleScalarResult()
-            ;
+        ;
+    }
+
+    public function markAllAsReadByUser(User $user)
+    {
+        $this->createQueryBuilder('n')
+            ->update()
+            ->set('n.seen', true)
+            ->where('n.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute()
+        ;
     }
 }
