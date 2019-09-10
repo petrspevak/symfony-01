@@ -99,6 +99,7 @@ class User implements UserInterface, Serializable
         $this->followers = new ArrayCollection();
         $this->following = new ArrayCollection();
         $this->microPostsLiked = new ArrayCollection();
+        $this->roles = [self::ROLE_USER];
     }
 
     public function getId(): ?int
