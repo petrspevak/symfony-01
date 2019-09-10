@@ -2,4 +2,6 @@
 
 Hello, {{ user.fullName }}!  You have registered successfully.
 
-Login page: <a href="{{ url('security_login') }}">{{ url('security_login') }}</a>
+Please confirm your registration by click on the following link:
+<a href="{{ url('security_confirm', {'token': user.confirmationToken}) }}">{{ url('security_confirm', {'token': user.confirmationToken}) }}</a>
+

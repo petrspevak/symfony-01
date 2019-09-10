@@ -93,6 +93,18 @@ class User implements UserInterface, Serializable
      */
     private $microPostsLiked;
 
+    /**
+     * @var string|null
+     * @ORM\Column(type="string", nullable=true, length=30)
+     */
+    private $confirmationToken;
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled = false;
+
     public function __construct()
     {
         $this->microPosts = new ArrayCollection();
@@ -197,6 +209,28 @@ class User implements UserInterface, Serializable
         return $this->microPostsLiked;
     }
 
+    public function getConfirmationToken(): ?string
+    {
+        return $this->confirmationToken;
+    }
+
+    public function setConfirmationToken(string $confirmationToken): User
+    {
+        $this->confirmationToken = $confirmationToken;
+        return $this;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): User
+    {
+        $this->enabled = $enabled;
+        return $this;
+    }
+
     public function getSalt()
     {
         return null;
@@ -212,7 +246,8 @@ class User implements UserInterface, Serializable
         return serialize([
             $this->id,
             $this->username,
-            $this->password
+            $this->password,
+            $this->enabled
         ]);
     }
 
@@ -220,7 +255,8 @@ class User implements UserInterface, Serializable
     {
         [   $this->id,
             $this->username,
-            $this->password] = unserialize($serialized, ['allowed_classes' => false]);
+            $this->password,
+            $this->enabled ] = unserialize($serialized, ['allowed_classes' => false]);
     }
 
     public function follow(User $userToFollow): self
