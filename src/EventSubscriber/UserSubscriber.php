@@ -40,6 +40,7 @@ class UserSubscriber implements EventSubscriberInterface
 
         $message = (new Swift_Message())
             ->setSubject('Welcome to the micro-post app!')
+            ->setFrom('micropost@micropost.com')
             ->setTo($registeredUser->getEmail())
             ->setBody($body, 'text/html');
 
