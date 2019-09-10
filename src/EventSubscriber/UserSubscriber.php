@@ -3,47 +3,39 @@
 namespace App\EventSubscriber;
 
 use App\Event\UserRegisterEvent;
-use Swift_Mailer;
-use Swift_Message;
+use App\Mailer\Mailer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class UserSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var Swift_Mailer
+     * @var Mailer
      */
     private $mailer;
-    /**
-     * @var Environment
-     */
-    private $twig;
 
-    public function __construct(Swift_Mailer $mailer, Environment $twig)
+    public function __construct(Mailer $mailer)
     {
         $this->mailer = $mailer;
-        $this->twig = $twig;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             UserRegisterEvent::NAME => 'onUserRegister'
         ];
     }
 
-    public function onUserRegister(UserRegisterEvent $event)
+    /**
+     * @param UserRegisterEvent $event
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function onUserRegister(UserRegisterEvent $event): void
     {
-        $registeredUser = $event->getRegisteredUser();
-
-        $body = $this->twig->render('email/registration.html.twig', ['user' => $registeredUser]);
-
-        $message = (new Swift_Message())
-            ->setSubject('Welcome to the micro-post app!')
-            ->setFrom('micropost@micropost.com')
-            ->setTo($registeredUser->getEmail())
-            ->setBody($body, 'text/html');
-
-        $this->mailer->send($message);
+        $this->mailer->sendConfirmationEmail($event->getRegisteredUser());
     }
 }
