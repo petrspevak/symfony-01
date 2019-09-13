@@ -41,5 +41,9 @@ services:
         arguments:
             $defaultLocale: '%kernel.default_locale%'
 
+    App\EventSubscriber\UserSubscriber:
+        arguments:
+            $defaultLocale: '%kernel.default_locale%'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
