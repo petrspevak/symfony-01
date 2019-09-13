@@ -1,7 +1,4 @@
-<h1>Welecome to the app!</h1>
-
-Hello, {{ user.fullName }}!  You have registered successfully.
-
-Please confirm your registration by click on the following link:
-<a href="{{ url('security_confirm', {'token': user.confirmationToken}) }}">{{ url('security_confirm', {'token': user.confirmationToken}) }}</a>
-
+{{ 'email.registration'|trans({
+    '%name%': user.fullName,
+    '%confirm-link%': url('security_confirm', {'token': user.confirmationToken})
+})|raw }}
